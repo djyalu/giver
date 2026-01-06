@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { AppSection, Character, ChapterSummary, Theme, QuizQuestion } from './types';
+import { AppSection, Character, ChapterSummary, Theme, QuizQuestion, VocabularyWord } from './types';
 import { 
-  BOOK_TITLE, AUTHOR, CHARACTERS, CHAPTERS, THEMES, COMMUNITY_RULES, QUIZ_QUESTIONS 
+  BOOK_TITLE, AUTHOR, CHARACTERS, CHAPTERS, THEMES, COMMUNITY_RULES, QUIZ_QUESTIONS, VOCABULARY_WORDS 
 } from './constants';
 import { chatWithTutor } from './services/geminiService';
 
@@ -13,6 +13,7 @@ const App: React.FC = () => {
   const [isChatLoading, setIsChatLoading] = useState(false);
   const [quizScore, setQuizScore] = useState<number | null>(null);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
+  const [learnedWords, setLearnedWords] = useState<Set<string>>(new Set());
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -45,6 +46,15 @@ const App: React.FC = () => {
       }
     });
     setQuizScore(score);
+  };
+
+  const toggleLearnedWord = (word: string) => {
+    setLearnedWords(prev => {
+      const next = new Set(prev);
+      if (next.has(word)) next.delete(word);
+      else next.add(word);
+      return next;
+    });
   };
 
   const renderSidebarItem = (section: AppSection, icon: string, label: string) => (
@@ -87,7 +97,7 @@ const App: React.FC = () => {
                 <h2 className="serif text-2xl font-bold text-gray-800 mb-4">Study Strategy</h2>
                 <ul className="space-y-3 text-gray-600">
                   <li className="flex gap-2"><i className="fas fa-check text-green-500 mt-1"></i> Use the <strong>AI Tutor</strong> to ask deep questions about Jonas's journey.</li>
-                  <li className="flex gap-2"><i className="fas fa-check text-green-500 mt-1"></i> Review <strong>Themes</strong> to understand Lowry's message.</li>
+                  <li className="flex gap-2"><i className="fas fa-check text-green-500 mt-1"></i> Expand your <strong>Vocabulary</strong> to understand "Precision of Language".</li>
                   <li className="flex gap-2"><i className="fas fa-check text-green-500 mt-1"></i> Take the <strong>Comprehension Quiz</strong> after reading each section.</li>
                 </ul>
               </div>
@@ -182,6 +192,36 @@ const App: React.FC = () => {
                 <div key={i} className="flex items-center gap-4 bg-white p-4 rounded-lg shadow-sm border border-gray-100">
                   <span className="text-2xl font-bold text-gray-200">#{i+1}</span>
                   <p className="text-gray-700 font-medium">{rule}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
+      case AppSection.VOCABULARY:
+        return (
+          <div className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="serif text-3xl font-bold text-gray-800">Vocabulary Hall</h2>
+              <div className="text-sm font-medium text-gray-500">
+                Learned: <span className="text-red-600">{learnedWords.size}</span> / {VOCABULARY_WORDS.length}
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {VOCABULARY_WORDS.map((v) => (
+                <div key={v.word} className={`relative bg-white p-6 rounded-xl shadow-sm border transition-all ${learnedWords.has(v.word) ? 'border-green-200 bg-green-50/30' : 'border-gray-100'}`}>
+                  <button 
+                    onClick={() => toggleLearnedWord(v.word)}
+                    className={`absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${learnedWords.has(v.word) ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-300 hover:text-gray-400'}`}
+                  >
+                    <i className="fas fa-check text-xs"></i>
+                  </button>
+                  <h3 className="text-xl font-bold text-gray-800 mb-1">{v.word}</h3>
+                  <span className="text-[10px] font-bold text-red-500 uppercase tracking-tighter">Chapter {v.chapter}</span>
+                  <p className="text-gray-700 text-sm mt-3 mb-4 font-medium leading-relaxed">{v.definition}</p>
+                  <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                    <p className="text-xs text-gray-500 italic">"{v.context}"</p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -328,6 +368,7 @@ const App: React.FC = () => {
           {renderSidebarItem(AppSection.CHARACTERS, 'fa-users', 'Characters')}
           {renderSidebarItem(AppSection.THEMES, 'fa-mountain', 'Themes')}
           {renderSidebarItem(AppSection.RULES, 'fa-gavel', 'Community Rules')}
+          {renderSidebarItem(AppSection.VOCABULARY, 'fa-spell-check', 'Vocabulary')}
           {renderSidebarItem(AppSection.QUIZ, 'fa-vial', 'Comprehension Quiz')}
           {renderSidebarItem(AppSection.CHAT, 'fa-comment-dots', 'Ask AI Tutor')}
         </nav>
@@ -343,7 +384,7 @@ const App: React.FC = () => {
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-h-screen overflow-hidden">
-        {/* Top Header - Mobile only toggle needed here ideally, but keeping it simple */}
+        {/* Top Header */}
         <header className="lg:hidden bg-white border-b border-gray-200 p-4 flex items-center justify-between sticky top-0 z-20">
            <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-red-600 rounded flex items-center justify-center text-white">
@@ -361,6 +402,7 @@ const App: React.FC = () => {
             <option value={AppSection.CHARACTERS}>Characters</option>
             <option value={AppSection.THEMES}>Themes</option>
             <option value={AppSection.RULES}>Rules</option>
+            <option value={AppSection.VOCABULARY}>Vocabulary</option>
             <option value={AppSection.QUIZ}>Quiz</option>
             <option value={AppSection.CHAT}>AI Tutor</option>
           </select>

@@ -2,24 +2,25 @@
 # The Giver Study Companion - 개발 및 배포 로그
 
 ## 버전 정보
-- **현재 버전:** 동작확인_20250124_v1.1
-- **상태:** Vercel 배포 최적화 완료
+- **현재 버전:** 동작확인_20250124_v1.4
+- **상태:** Vite 빌드 시스템 도입으로 Vercel 배포 시 화면 Blank 문제 완벽 해결
 
 ## 기능 구현 상태
+- [x] **빌드 시스템 (New):** Vite + TypeScript + React 19 환경 구성
 - [x] **도서 데이터:** 챕터 요약, 인물 분석, 주제별 예시 데이터 포함
+- [x] **단어 학습:** 소설 속 핵심 단어장(Vocabulary Hall) 및 학습 체크 기능
 - [x] **퀴즈 시스템:** 4개 문항 및 결과 피드백 시스템 정상 동작
-- [x] **AI 튜터:** Gemini 3 Flash 모델을 이용한 실시간 질의응답 기능
-- [x] **배포 설정:** `vercel.json`을 통한 SPA 라우팅 및 보안 헤더 설정
-- [x] **예외 처리:** API 키 미설정 및 API 호출 한도 초과 시 한글 안내 메시지 출력
+- [x] **AI 튜터:** Gemini 3 Flash 모델 연동 (Vercel 환경 변수 주입 확인)
+- [x] **배포 최적화:** `dist` 폴더 빌드 및 SPA 라우팅 지원
 
-## Vercel 배포 절차
-1. GitHub 저장소에 코드를 푸시합니다.
-2. Vercel에서 새 프로젝트를 생성하고 저장소를 연결합니다.
-3. **Environment Variables** 설정 섹션에서 다음을 추가합니다:
-   - Key: `API_KEY`
-   - Value: [Google AI Studio에서 발급받은 키]
-4. 배포 버튼을 클릭합니다.
+## Vercel 배포 가이드 (v1.4 필수)
+1. **Framework Preset:** `Vite`를 선택합니다 (Vercel이 자동으로 인식함).
+2. **Build Command:** `npm run build`
+3. **Output Directory:** `dist`
+4. **Environment Variables:** `API_KEY`가 올바르게 설정되어 있는지 확인합니다.
 
 ## 체크포인트 이력
-- `동작확인_20250124_v1.0`: 초기 기능 및 UI 구현 완료
-- `동작확인_20250124_v1.1`: Vercel 배포용 설정(`vercel.json`) 추가 및 에러 핸들링 강화 (현재)
+- `동작확인_20250124_v1.0`: 초기 기능 구현
+- `동작확인_20250124_v1.2`: 단어 학습 섹션 추가
+- `동작확인_20250124_v1.3`: index.html 진입점 수정 시도
+- `동작확인_20250124_v1.4`: Vite 빌드 시스템 도입으로 배포 안정화 (현재)

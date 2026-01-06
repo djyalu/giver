@@ -1,5 +1,5 @@
 
-import { Character, ChapterSummary, Theme, QuizQuestion } from './types';
+import { Character, ChapterSummary, Theme, QuizQuestion, VocabularyWord } from './types';
 
 export const BOOK_TITLE = "The Giver";
 export const AUTHOR = "Lois Lowry";
@@ -96,6 +96,57 @@ export const COMMUNITY_RULES = [
   "Public apology is required for all minor transgressions.",
   "Objects must not be removed from the recreation area.",
   "Release is the ultimate punishment for three transgressions."
+];
+
+export const VOCABULARY_WORDS: VocabularyWord[] = [
+  {
+    word: "Apprehensive",
+    definition: "Anxious or fearful that something bad or unpleasant will happen.",
+    context: "Jonas was careful about his use of language. Not frightened. That was too strong an adjective. He was apprehensive.",
+    chapter: 1
+  },
+  {
+    word: "Nurturer",
+    definition: "A person whose job is to take care of newchildren (infants) until they are assigned a family unit.",
+    context: "Jonas's father was a Nurturer. He was one of the people who cared for the newchildren.",
+    chapter: 1
+  },
+  {
+    word: "Transgression",
+    definition: "An act that goes against a law, rule, or code of conduct; an offense.",
+    context: "The rules say that if there's a third transgression, he simply has to be released.",
+    chapter: 1
+  },
+  {
+    word: "Aptitude",
+    definition: "A natural ability to do something.",
+    context: "The Committee of Elders observed each child's aptitude before giving them an Assignment.",
+    chapter: 2
+  },
+  {
+    word: "Precision of Language",
+    definition: "A community rule requiring exact and correct word choice to avoid confusion or lies.",
+    context: "Asher was often corrected for his lack of precision of language.",
+    chapter: 3
+  },
+  {
+    word: "Admonition",
+    definition: "A firm warning or reprimand.",
+    context: "Jonas felt a slight sense of admonition from the Speaker's announcement.",
+    chapter: 3
+  },
+  {
+    word: "Distraught",
+    definition: "Deeply upset and agitated.",
+    context: "I guess I just got distraught, watching them. I didn't want to leave them.",
+    chapter: 1
+  },
+  {
+    word: "Assimilated",
+    definition: "To take in information, ideas, or culture and understand fully.",
+    context: "Finally, the memories would be assimilated and become a part of his own awareness.",
+    chapter: 13
+  }
 ];
 
 export const QUIZ_QUESTIONS: QuizQuestion[] = [

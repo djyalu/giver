@@ -27,12 +27,20 @@ export interface QuizQuestion {
   explanation: string;
 }
 
+export interface VocabularyWord {
+  word: string;
+  definition: string;
+  context: string;
+  chapter?: number;
+}
+
 export enum AppSection {
   OVERVIEW = 'overview',
   CHAPTERS = 'chapters',
   CHARACTERS = 'characters',
   THEMES = 'themes',
   RULES = 'rules',
+  VOCABULARY = 'vocabulary',
   QUIZ = 'quiz',
   CHAT = 'chat'
 }
