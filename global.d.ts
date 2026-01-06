@@ -1,11 +1,16 @@
 
 /**
- * Augmenting the NodeJS namespace to ensure process.env.API_KEY is correctly typed.
- * We do not redeclare the 'process' variable directly because it is already 
- * provided by the environment (e.g., Node.js or Vite's environment).
+ * Explicitly define the 'process' object for the TypeScript compiler.
+ * This satisfies tsc when it encounters process.env.API_KEY in both 
+ * browser-side services and build-side config files.
  */
-declare namespace NodeJS {
-  interface ProcessEnv {
-    API_KEY: string;
-  }
+export {};
+
+declare global {
+  var process: {
+    env: {
+      API_KEY: string;
+      [key: string]: string | undefined;
+    };
+  };
 }
