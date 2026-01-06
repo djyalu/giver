@@ -8,37 +8,37 @@ export const CHARACTERS: Character[] = [
   {
     name: "Jonas",
     role: "The Protagonist / Receiver of Memory",
-    description: "An Eleven (at the start) who is sensitive and intelligent. He is selected to be the next Receiver of Memory because he has the 'Capacity to See Beyond'.",
-    image: "jonas.jpg",
-    symbolism: "Representing individuality and the burden of knowledge."
+    description: "짧은 갈색 머리에 하이 칼라의 리넨 셔츠를 입은 진지하고 사려 깊은 소년입니다. '사물을 넘어선 곳을 보는 능력'을 가졌으며, 공동체의 무채색 삶 속에서 처음으로 변화를 감지하기 시작합니다.",
+    image: "A realistic cinematic portrait of a serious 12-year-old boy with short brown hair, wearing a high-collared grey linen shirt. He has intense, pale eyes that seem to see more than others. Dystopian minimalist background, grey scale style with a hint of color emerging.",
+    symbolism: "개인성과 지식의 무게, 그리고 진실을 마주하는 용기."
   },
   {
     name: "The Giver",
     role: "The Mentor / Current Receiver",
-    description: "An old man who holds the memories of the world's past and transmits them to Jonas. He is weary from the weight of his burden.",
-    image: "giver.jpg",
-    symbolism: "Wisdom and the emotional depth of human history."
+    description: "수많은 책으로 둘러싸인 방에 거주하는, 길고 흰 머리와 수염을 가진 지혜로운 노인입니다. 인류의 모든 기억을 혼자 짊어지고 있어 늘 피로해 보이지만, 조나스에게 세상을 전달하는 중요한 스승입니다.",
+    image: "A realistic portrait of an elderly man with long white hair and a thick white beard. He looks weary and weighed down by memories. He is sitting in a room filled with thousands of old books on shelves. Cinematic, dramatic lighting.",
+    symbolism: "지혜, 고통, 그리고 인간 역사의 감정적 깊이."
   },
   {
     name: "Gabriel (Gabe)",
     role: "The Newchild",
-    description: "A baby who struggles to sleep and is cared for by Jonas's family. He also has pale eyes and the capacity to receive memories.",
-    image: "gabriel.jpg",
-    symbolism: "Hope, innocence, and the future."
+    description: "조나스와 같은 밝은색 눈을 가진 아기로, 이름이 새겨진 부드러운 리넨 천에 싸여 있습니다. 밤에 잠들지 못해 고통받지만 조나스가 전달하는 기억을 통해 안정을 찾는, 희망의 상징입니다.",
+    image: "A close-up realistic portrait of a beautiful baby with bright, curious pale eyes. The baby is wrapped in a soft, light grey linen blanket with a name tag visible. Soft, ethereal lighting.",
+    symbolism: "순수함, 생명의 가치, 그리고 더 나은 미래."
   },
   {
     name: "Asher",
     role: "Jonas's Best Friend",
-    description: "Cheerful and fun-loving, but often struggles with 'precision of language'. He is assigned to be Assistant Director of Recreation.",
-    image: "asher.jpg",
-    symbolism: "The loss of depth in a society centered on Sameness."
+    description: "헝클어진 갈색 머리와 얼굴 가득한 주근깨, 그리고 해맑은 미소를 지닌 소년입니다. 활기차고 장난기 가득한 성격이지만, 공동체의 엄격한 '언어의 정확성' 규칙 때문에 자주 지적을 받습니다.",
+    image: "A realistic portrait of a cheerful 12-year-old boy with messy brown hair and many freckles on his face. He is laughing or smiling broadly, wearing a simple grey community tunic. Vibrant energy despite the controlled environment.",
+    symbolism: "개성이 거세된 사회에서의 단순한 즐거움과 순응."
   },
   {
     name: "Fiona",
     role: "Jonas's Friend",
-    description: "A calm, gentle female assigned to be Caretaker of the Old. Jonas has his first 'Stirrings' about her.",
-    image: "fiona.jpg",
-    symbolism: "The suppression of human emotion and romance."
+    description: "붉은빛이 감도는 갈색 머리와 차분하고 온화한 분위기를 가진 소녀입니다. 노인 거주 시설에서 봉사하며 타인을 돌보는 따뜻한 마음씨를 가졌으며, 조나스가 처음으로 깊은 감정을 느끼게 되는 대상입니다.",
+    image: "A realistic portrait of a calm 12-year-old girl with auburn (red-tinged) hair tied back neatly. She has a gentle and caring expression, wearing a grey medical attendant tunic. Soft, warm lighting.",
+    symbolism: "억압된 인간의 애정과 로맨스, 감정의 아름다움."
   }
 ];
 
@@ -130,7 +130,7 @@ export const VOCABULARY_WORDS: VocabularyWord[] = [
   { word: "Obsolete", definition: "쓸모없게 된, 구식의", context: "Climate Control made snow obsolete.", chapter: 11 },
   { word: "Rueful", definition: "후회하는, 가련한", context: "The Giver gave a rueful laugh.", chapter: 20 },
   { word: "Emphatically", definition: "단호하게, 강조하여", context: "Jonas shook his head emphatically.", chapter: 20 },
-  { word: "Solace", definition: "위안, 위로", context: "He found solace in the quiet memories.", chapter: 21 },
+  { word: "Solace", definition: "위안, 위로", context: "He find solace in the quiet memories.", chapter: 21 },
   { word: "Stealthily", definition: "몰래, 은밀히", context: "Jonas moved stealthily through the dark streets.", chapter: 21 },
   { word: "Languid", definition: "힘없는, 나른한", context: "The river moved in a languid pace.", chapter: 22 },
   { word: "Vigilant", definition: "경계하는, 방심하지 않는", context: "He had to be vigilant for search planes.", chapter: 22 },

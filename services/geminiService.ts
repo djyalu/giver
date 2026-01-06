@@ -17,15 +17,12 @@ const SYSTEM_INSTRUCTION = `
 모든 답변은 한국어로 작성해 주세요.
 `;
 
-// Fix: Use GenerateContentResponse type if needed, but here we rely on inference for simplicity
 export const chatWithTutor = async (userMessage: string, history: { role: 'user' | 'model', parts: { text: string }[] }[]) => {
   try {
-    // API_KEY 존재 여부 확인
     if (!process.env.API_KEY) {
       throw new Error("API_KEY_MISSING");
     }
 
-    // 최신 API 키 반영을 위해 요청 시점에 인스턴스 생성
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
@@ -39,7 +36,6 @@ export const chatWithTutor = async (userMessage: string, history: { role: 'user'
       },
     });
 
-    // Fix: Access .text property directly (not a method)
     const text = response.text;
     if (!text) {
       throw new Error("EMPTY_RESPONSE");
@@ -48,17 +44,46 @@ export const chatWithTutor = async (userMessage: string, history: { role: 'user'
     return text;
   } catch (error: any) {
     console.error("Gemini API Error:", error);
-    
-    // 에러 유형별 한글 메시지 처리
     if (error.message === "API_KEY_MISSING") {
-      return "시스템 설정 오류: AI Tutor를 이용하려면 Vercel 환경 변수에 API_KEY를 설정해야 합니다.";
+      return "시스템 설정 오류: AI Tutor를 이용하려면 API_KEY를 설정해야 합니다.";
     }
-    
-    // 429: Too Many Requests 처리
     if (error.status === 429 || (error.message && error.message.includes("429"))) {
       return "현재 요청이 너무 많아 AI가 잠시 쉬고 있습니다. 1~2분 후에 다시 질문해 주세요.";
     }
+    return "죄송합니다. 기억의 전당과 연결하는 중에 문제가 발생했습니다.";
+  }
+};
 
-    return "죄송합니다. 기억의 전당(서버)과 연결하는 중에 문제가 발생했습니다. '정확한 언어'를 사용하여 잠시 후 다시 질문해 주세요.";
+/**
+ * Generates an AI portrait based on a character description prompt.
+ */
+export const generatePortrait = async (prompt: string): Promise<string | null> => {
+  try {
+    if (!process.env.API_KEY) return null;
+
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash-image',
+      contents: {
+        parts: [
+          { text: prompt }
+        ],
+      },
+      config: {
+        imageConfig: {
+          aspectRatio: "1:1",
+        },
+      },
+    });
+
+    for (const part of response.candidates[0].content.parts) {
+      if (part.inlineData) {
+        return `data:image/png;base64,${part.inlineData.data}`;
+      }
+    }
+    return null;
+  } catch (error) {
+    console.error("Image Generation Error:", error);
+    return null;
   }
 };

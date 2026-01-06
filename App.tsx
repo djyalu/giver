@@ -4,7 +4,67 @@ import { AppSection, Character, ChapterSummary, Theme, QuizQuestion, VocabularyW
 import { 
   BOOK_TITLE, AUTHOR, CHARACTERS, CHAPTERS, THEMES, COMMUNITY_RULES, QUIZ_QUESTIONS, VOCABULARY_WORDS 
 } from './constants';
-import { chatWithTutor } from './services/geminiService';
+import { chatWithTutor, generatePortrait } from './services/geminiService';
+
+// Character Image Component with AI Generation and 'Seeing Beyond' Effect
+const CharacterImage: React.FC<{ char: Character }> = ({ char }) => {
+  const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchImage = async () => {
+      if (!char.image) {
+        setIsLoading(false);
+        return;
+      }
+      
+      setIsLoading(true);
+      const url = await generatePortrait(char.image);
+      
+      if (isMounted) {
+        if (url) {
+          setGeneratedImageUrl(url);
+        } else {
+          setHasError(true);
+        }
+        setIsLoading(false);
+      }
+    };
+
+    fetchImage();
+    return () => { isMounted = false; };
+  }, [char.image]);
+
+  return (
+    <div className="relative h-72 overflow-hidden bg-gray-200 flex items-center justify-center">
+      {isLoading ? (
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-4 border-red-200 border-t-red-600 rounded-full animate-spin"></div>
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest animate-pulse">Receiving Memory...</p>
+        </div>
+      ) : !hasError && generatedImageUrl ? (
+        <img 
+          src={generatedImageUrl} 
+          alt={char.name} 
+          className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-in-out"
+        />
+      ) : (
+        <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-red-50 to-gray-300 text-red-300">
+          <span className="text-8xl font-black opacity-20">{char.name[0]}</span>
+          <p className="absolute bottom-4 text-[10px] font-bold tracking-widest uppercase opacity-40">Vision Blurred</p>
+        </div>
+      )}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-80"></div>
+      <div className="absolute bottom-4 left-5 text-white">
+        <h3 className="text-2xl font-bold tracking-tight">{char.name}</h3>
+        <p className="text-xs font-semibold uppercase tracking-widest text-red-400">{char.role}</p>
+      </div>
+    </div>
+  );
+};
 
 // Markdown-like text renderer to handle bold and line breaks
 const FormattedText: React.FC<{ text: string }> = ({ text }) => {
@@ -148,31 +208,17 @@ const App: React.FC = () => {
       case AppSection.CHARACTERS:
         return (
           <div className="space-y-6">
-            <h2 className="serif text-3xl font-bold text-gray-800">Character Analysis</h2>
+            <div className="flex justify-between items-end">
+              <div>
+                <h2 className="serif text-3xl font-bold text-gray-800">Character Analysis</h2>
+                <p className="text-gray-500 text-sm mt-1">Discover the unique traits and symbolism of key individuals, rendered by Gemini AI.</p>
+              </div>
+            </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {CHARACTERS.map(char => (
-                <div key={char.name} className="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col">
-                  {/* Character Image Header */}
-                  <div className="relative h-72 overflow-hidden bg-gray-200">
-                    {char.image ? (
-                      <img 
-                        src={char.image} 
-                        alt={char.name} 
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-red-50 text-red-200 text-6xl font-black">
-                        {char.name[0]}
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90"></div>
-                    <div className="absolute bottom-4 left-5 text-white">
-                      <h3 className="text-2xl font-bold tracking-tight">{char.name}</h3>
-                      <p className="text-xs font-semibold uppercase tracking-widest text-red-400">{char.role}</p>
-                    </div>
-                  </div>
+                <div key={char.name} className="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-500 flex flex-col">
+                  <CharacterImage char={char} />
                   
-                  {/* Character Description */}
                   <div className="p-6 flex-1 flex flex-col">
                     <p className="text-gray-600 text-sm mb-6 leading-relaxed flex-1">
                       {char.description}
@@ -180,10 +226,10 @@ const App: React.FC = () => {
                     {char.symbolism && (
                       <div className="pt-4 border-t border-gray-50">
                         <div className="flex items-center gap-2 mb-2">
-                           <i className="fas fa-microchip text-[10px] text-red-400"></i>
+                           <i className="fas fa-sparkles text-[10px] text-red-400"></i>
                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Symbolism</span>
                         </div>
-                        <p className="text-sm text-gray-800 italic leading-snug">{char.symbolism}</p>
+                        <p className="text-sm text-gray-800 italic font-medium leading-snug">{char.symbolism}</p>
                       </div>
                     )}
                   </div>
