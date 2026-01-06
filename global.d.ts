@@ -1,18 +1,11 @@
 /**
  * Global declaration for 'process' to satisfy TypeScript compiler (tsc).
- * This allows the use of process.env.API_KEY in both browser and build scripts.
+ * We augment the NodeJS namespace to avoid conflicts with existing declarations
+ * of the global 'process' variable while ensuring process.env.API_KEY is correctly typed.
  */
-
-export {};
-
-declare global {
-  interface Process {
-    env: {
-      API_KEY: string;
-      [key: string]: string | undefined;
-    };
+declare namespace NodeJS {
+  interface ProcessEnv {
+    API_KEY: string;
+    [key: string]: string | undefined;
   }
-
-  // Use var here to allow augmentation of the global process object
-  var process: Process;
 }

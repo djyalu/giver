@@ -9,30 +9,35 @@ export const CHARACTERS: Character[] = [
     name: "Jonas",
     role: "The Protagonist / Receiver of Memory",
     description: "An Eleven (at the start) who is sensitive and intelligent. He is selected to be the next Receiver of Memory because he has the 'Capacity to See Beyond'.",
+    image: "jonas.jpg",
     symbolism: "Representing individuality and the burden of knowledge."
   },
   {
     name: "The Giver",
     role: "The Mentor / Current Receiver",
     description: "An old man who holds the memories of the world's past and transmits them to Jonas. He is weary from the weight of his burden.",
+    image: "giver.jpg",
     symbolism: "Wisdom and the emotional depth of human history."
   },
   {
     name: "Gabriel (Gabe)",
     role: "The Newchild",
     description: "A baby who struggles to sleep and is cared for by Jonas's family. He also has pale eyes and the capacity to receive memories.",
+    image: "gabriel.jpg",
     symbolism: "Hope, innocence, and the future."
   },
   {
     name: "Asher",
     role: "Jonas's Best Friend",
     description: "Cheerful and fun-loving, but often struggles with 'precision of language'. He is assigned to be Assistant Director of Recreation.",
+    image: "asher.jpg",
     symbolism: "The loss of depth in a society centered on Sameness."
   },
   {
     name: "Fiona",
     role: "Jonas's Friend",
     description: "A calm, gentle female assigned to be Caretaker of the Old. Jonas has his first 'Stirrings' about her.",
+    image: "fiona.jpg",
     symbolism: "The suppression of human emotion and romance."
   }
 ];
@@ -99,54 +104,37 @@ export const COMMUNITY_RULES = [
 ];
 
 export const VOCABULARY_WORDS: VocabularyWord[] = [
-  {
-    word: "Apprehensive",
-    definition: "Anxious or fearful that something bad or unpleasant will happen.",
-    context: "Jonas was careful about his use of language. Not frightened. That was too strong an adjective. He was apprehensive.",
-    chapter: 1
-  },
-  {
-    word: "Nurturer",
-    definition: "A person whose job is to take care of newchildren (infants) until they are assigned a family unit.",
-    context: "Jonas's father was a Nurturer. He was one of the people who cared for the newchildren.",
-    chapter: 1
-  },
-  {
-    word: "Transgression",
-    definition: "An act that goes against a law, rule, or code of conduct; an offense.",
-    context: "The rules say that if there's a third transgression, he simply has to be released.",
-    chapter: 1
-  },
-  {
-    word: "Aptitude",
-    definition: "A natural ability to do something.",
-    context: "The Committee of Elders observed each child's aptitude before giving them an Assignment.",
-    chapter: 2
-  },
-  {
-    word: "Precision of Language",
-    definition: "A community rule requiring exact and correct word choice to avoid confusion or lies.",
-    context: "Asher was often corrected for his lack of precision of language.",
-    chapter: 3
-  },
-  {
-    word: "Admonition",
-    definition: "A firm warning or reprimand.",
-    context: "Jonas felt a slight sense of admonition from the Speaker's announcement.",
-    chapter: 3
-  },
-  {
-    word: "Distraught",
-    definition: "Deeply upset and agitated.",
-    context: "I guess I just got distraught, watching them. I didn't want to leave them.",
-    chapter: 1
-  },
-  {
-    word: "Assimilated",
-    definition: "To take in information, ideas, or culture and understand fully.",
-    context: "Finally, the memories would be assimilated and become a part of his own awareness.",
-    chapter: 13
-  }
+  { word: "Ironic", definition: "반어적인, 비꼬는 (예상과 반대되는 상황)", context: "It was almost ironic that the pilot was lost.", chapter: 1 },
+  { word: "Palpable", definition: "손에 만져질 듯한, 뚜렷한", context: "Now the thinking part of him said that it would be a palpable relief.", chapter: 1 },
+  { word: "Apprehensive", definition: "걱정되는, 불안한", context: "Jonas was careful about his use of language... He was apprehensive.", chapter: 1 },
+  { word: "Nurturer", definition: "양육자 (아이들을 돌보는 직업)", context: "Jonas's father was a Nurturer.", chapter: 1 },
+  { word: "Transgression", definition: "위반, 범죄", context: "The rules say that if there's a third transgression, he simply has to be released.", chapter: 1 },
+  { word: "Adherence", definition: "고수, 충실한 준수", context: "The Committee of Elders was responsible for the adherence to rules.", chapter: 2 },
+  { word: "Aptitude", definition: "적성, 소질", context: "The Elders observed each child's aptitude.", chapter: 2 },
+  { word: "Chastisement", definition: "징벌, 호된 꾸짖음", context: "It was a minor rule, rather like the one about chastisement.", chapter: 3 },
+  { word: "Petulantly", definition: "심술궂게, 까다롭게", context: "I think I'd like that, Lily said petulantly.", chapter: 3 },
+  { word: "Remorse", definition: "후회, 자책", context: "No one had mentioned it, but the remorse was there.", chapter: 3 },
+  { word: "Mystified", definition: "어리둥절하게 하는", context: "Jonas had been mystified by the incident with the apple.", chapter: 3 },
+  { word: "Nondescript", definition: "특징 없는, 평범한", context: "The apple remained the same nondescript shade.", chapter: 3 },
+  { word: "Chortled", definition: "깔깔거리며 웃다", context: "Larissa chortled with delight as Jonas bathed her.", chapter: 4 },
+  { word: "Relinquished", definition: "포기한, 양도한", context: "They relinquished their children to the community.", chapter: 6 },
+  { word: "Exuberant", definition: "활기 넘치는, 열광적인", context: "The audience gave an exuberant cheer.", chapter: 6 },
+  { word: "Scrupulously", definition: "양심적으로, 세심하게", context: "The Assignments were scrupulously thought away.", chapter: 6 },
+  { word: "Indolence", definition: "게으름, 나태", context: "What we observe as playfulness and purity is actually indolence.", chapter: 8 },
+  { word: "Conspicuous", definition: "눈에 띄는, 뚜렷한", context: "Jonas's selection was the most conspicuous of all.", chapter: 10 },
+  { word: "Admonition", definition: "훈계, 권고", context: "He remembered the admonition about precision of language.", chapter: 12 },
+  { word: "Assimilated", definition: "흡수된, 동화된", context: "The memories would be assimilated and become a part of him.", chapter: 13 },
+  { word: "Invigorating", definition: "기운을 돋우는, 상쾌한", context: "The memory of the sled ride was invigorating.", chapter: 14 },
+  { word: "Ominous", definition: "불길한, 험악한", context: "The gray clouds looked ominous.", chapter: 15 },
+  { word: "Pervaded", definition: "만연한, 구석구석 스며든", context: "The sadness pervaded the entire room.", chapter: 16 },
+  { word: "Obsolete", definition: "쓸모없게 된, 구식의", context: "Climate Control made snow obsolete.", chapter: 11 },
+  { word: "Rueful", definition: "후회하는, 가련한", context: "The Giver gave a rueful laugh.", chapter: 20 },
+  { word: "Emphatically", definition: "단호하게, 강조하여", context: "Jonas shook his head emphatically.", chapter: 20 },
+  { word: "Solace", definition: "위안, 위로", context: "He found solace in the quiet memories.", chapter: 21 },
+  { word: "Stealthily", definition: "몰래, 은밀히", context: "Jonas moved stealthily through the dark streets.", chapter: 21 },
+  { word: "Languid", definition: "힘없는, 나른한", context: "The river moved in a languid pace.", chapter: 22 },
+  { word: "Vigilant", definition: "경계하는, 방심하지 않는", context: "He had to be vigilant for search planes.", chapter: 22 },
+  { word: "Lethargy", definition: "무기력, 혼수상태", context: "A heavy lethargy took over his tired body.", chapter: 23 }
 ];
 
 export const QUIZ_QUESTIONS: QuizQuestion[] = [

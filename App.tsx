@@ -6,6 +6,20 @@ import {
 } from './constants';
 import { chatWithTutor } from './services/geminiService';
 
+// Markdown-like text renderer to handle bold and line breaks
+const FormattedText: React.FC<{ text: string }> = ({ text }) => {
+  return (
+    <div className="whitespace-pre-wrap leading-relaxed">
+      {text.split(/(\*\*.*?\*\*)/g).map((part, i) => {
+        if (part.startsWith('**') && part.endsWith('**')) {
+          return <strong key={i} className="font-bold text-gray-900">{part.slice(2, -2)}</strong>;
+        }
+        return part;
+      })}
+    </div>
+  );
+};
+
 const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState<AppSection>(AppSection.OVERVIEW);
   const [chatInput, setChatInput] = useState('');
@@ -135,25 +149,44 @@ const App: React.FC = () => {
         return (
           <div className="space-y-6">
             <h2 className="serif text-3xl font-bold text-gray-800">Character Analysis</h2>
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {CHARACTERS.map(char => (
-                <div key={char.name} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-red-600 font-bold text-xl">
-                      {char.name[0]}
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-gray-800">{char.name}</h3>
-                      <p className="text-sm text-red-600 font-medium">{char.role}</p>
+                <div key={char.name} className="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col">
+                  {/* Character Image Header */}
+                  <div className="relative h-72 overflow-hidden bg-gray-200">
+                    {char.image ? (
+                      <img 
+                        src={char.image} 
+                        alt={char.name} 
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-red-50 text-red-200 text-6xl font-black">
+                        {char.name[0]}
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90"></div>
+                    <div className="absolute bottom-4 left-5 text-white">
+                      <h3 className="text-2xl font-bold tracking-tight">{char.name}</h3>
+                      <p className="text-xs font-semibold uppercase tracking-widest text-red-400">{char.role}</p>
                     </div>
                   </div>
-                  <p className="text-gray-600 text-sm mb-4 leading-relaxed">{char.description}</p>
-                  {char.symbolism && (
-                    <div className="pt-3 border-t border-gray-50">
-                      <span className="text-xs font-bold text-gray-400 uppercase">Symbolism</span>
-                      <p className="text-sm text-gray-700 italic">{char.symbolism}</p>
-                    </div>
-                  )}
+                  
+                  {/* Character Description */}
+                  <div className="p-6 flex-1 flex flex-col">
+                    <p className="text-gray-600 text-sm mb-6 leading-relaxed flex-1">
+                      {char.description}
+                    </p>
+                    {char.symbolism && (
+                      <div className="pt-4 border-t border-gray-50">
+                        <div className="flex items-center gap-2 mb-2">
+                           <i className="fas fa-microchip text-[10px] text-red-400"></i>
+                           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Symbolism</span>
+                        </div>
+                        <p className="text-sm text-gray-800 italic leading-snug">{char.symbolism}</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
@@ -285,60 +318,72 @@ const App: React.FC = () => {
 
       case AppSection.CHAT:
         return (
-          <div className="flex flex-col h-[calc(100vh-12rem)] max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-            <div className="bg-gray-900 p-4 text-white flex items-center justify-between">
+          <div className="flex flex-col h-[calc(100vh-12rem)] max-w-4xl mx-auto bg-gray-50 rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+            <div className="bg-gray-900 p-4 text-white flex items-center justify-between shadow-md z-10">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center shadow-inner">
                   <i className="fas fa-user-graduate"></i>
                 </div>
                 <div>
-                  <h3 className="font-bold">AI Study Tutor</h3>
-                  <p className="text-xs text-gray-400">Ask about Sameness, Jonas, or The Giver</p>
+                  <h3 className="font-bold tracking-tight">AI Study Tutor</h3>
+                  <p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">Hall of Memories Access</p>
                 </div>
               </div>
             </div>
             
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-opacity-5">
               {chatMessages.length === 0 && (
-                <div className="text-center py-12 text-gray-400">
-                  <p className="italic">"The worst part of holding the memories is not the pain. It's the loneliness of it. Memories need to be shared."</p>
-                  <p className="text-sm mt-4">Start a conversation to share the burden of knowledge.</p>
+                <div className="flex flex-col items-center justify-center h-full text-center space-y-4 px-8">
+                  <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm border border-gray-100">
+                    <i className="fas fa-brain text-3xl text-red-500"></i>
+                  </div>
+                  <p className="serif text-xl italic text-gray-500 max-w-sm">"The worst part of holding the memories is not the pain. It's the loneliness of it. Memories need to be shared."</p>
+                  <p className="text-sm text-gray-400 bg-white px-4 py-2 rounded-full border border-gray-100 shadow-sm">Start a conversation to share the burden of knowledge.</p>
                 </div>
               )}
               {chatMessages.map((msg, i) => (
-                <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[80%] px-4 py-3 rounded-2xl shadow-sm ${
+                <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}>
+                  <div className={`max-w-[85%] px-5 py-4 rounded-2xl shadow-sm ${
                     msg.role === 'user' 
-                    ? 'bg-red-600 text-white rounded-tr-none' 
-                    : 'bg-gray-100 text-gray-800 rounded-tl-none border border-gray-200'
+                    ? 'bg-red-600 text-white rounded-tr-none font-medium' 
+                    : 'bg-white text-gray-800 rounded-tl-none border border-gray-200'
                   }`}>
-                    {msg.text}
+                    {msg.role === 'user' ? (
+                      msg.text
+                    ) : (
+                      <FormattedText text={msg.text} />
+                    )}
                   </div>
                 </div>
               ))}
               {isChatLoading && (
-                <div className="flex justify-start">
-                  <div className="bg-gray-100 px-4 py-3 rounded-2xl animate-pulse text-gray-400 italic">
-                    The Tutor is consulting the Hall of Memories...
+                <div className="flex justify-start animate-pulse">
+                  <div className="bg-white border border-gray-200 px-5 py-4 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-3">
+                    <div className="flex gap-1">
+                      <div className="w-2 h-2 bg-red-400 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-red-400 rounded-full animate-bounce [animation-delay:0.2s]"></div>
+                      <div className="w-2 h-2 bg-red-400 rounded-full animate-bounce [animation-delay:0.4s]"></div>
+                    </div>
+                    <span className="text-sm text-gray-400 font-medium italic">Consulting memories...</span>
                   </div>
                 </div>
               )}
               <div ref={chatEndRef} />
             </div>
 
-            <div className="p-4 border-t border-gray-100 flex gap-2">
+            <div className="p-4 bg-white border-t border-gray-200 flex gap-2 items-center">
               <input 
                 type="text"
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                placeholder="Ask your question here..."
-                className="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-red-500"
+                placeholder="Ask your question with 'Precision of Language'..."
+                className="flex-1 px-5 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all bg-gray-50"
               />
               <button 
                 onClick={handleSendMessage}
-                disabled={isChatLoading}
-                className="bg-red-600 text-white w-12 h-12 rounded-xl flex items-center justify-center hover:bg-red-700 transition-colors disabled:opacity-50"
+                disabled={isChatLoading || !chatInput.trim()}
+                className="bg-red-600 text-white w-12 h-12 rounded-xl flex items-center justify-center hover:bg-red-700 hover:shadow-lg active:scale-95 transition-all disabled:opacity-50 disabled:grayscale"
               >
                 <i className="fas fa-paper-plane"></i>
               </button>
@@ -358,7 +403,7 @@ const App: React.FC = () => {
           </div>
           <div>
             <h1 className="serif font-bold text-xl leading-none">GIVER</h1>
-            <span className="text-[10px] text-gray-400 uppercase tracking-widest">Study Companion</span>
+            <span className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Study Companion</span>
           </div>
         </div>
         
@@ -374,7 +419,7 @@ const App: React.FC = () => {
         </nav>
 
         <div className="p-4 bg-gray-50 rounded-xl border border-gray-100">
-          <p className="text-xs text-gray-400 mb-2 uppercase font-bold tracking-tighter">Current Assignment</p>
+          <p className="text-[10px] text-gray-400 mb-2 uppercase font-black tracking-tighter">Current Assignment</p>
           <p className="text-sm font-bold text-gray-700">Receiver-in-training</p>
           <div className="mt-3 h-1.5 bg-gray-200 rounded-full overflow-hidden">
             <div className="h-full bg-red-500 w-1/3"></div>
