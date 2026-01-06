@@ -1,0 +1,7 @@
+{
+  "name": "The Giver Study Companion",
+  "description": "An interactive study guide for Lois Lowry's 'The Giver', featuring chapter summaries, character analysis, theme explorations, and an AI-powered tutor to help middle school students master the text.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
