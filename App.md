@@ -1,17 +1,16 @@
-
 # The Giver Study Companion - 개발 및 배포 로그
 
 ## 버전 정보
-- **현재 버전:** 동작확인_20250124_v1.5
-- **상태:** TypeScript 'process' 정의 오류 수정 및 빌드 성공 확인 중
+- **현재 버전:** 동작확인_20250124_v1.5.1
+- **상태:** TypeScript 글로벌 타입 정의 추가로 Vercel 빌드 오류 해결 시도
 
 ## 기능 구현 상태
-- [x] **타입 오류 해결 (New):** `@types/node` 추가 및 `tsconfig.json` 업데이트로 `process.env` 참조 오류 해결
+- [x] **빌드 오류 해결 (New):** `global.d.ts` 파일을 추가하여 `process.env`에 대한 명시적 타입 정의 제공. `index.html` 내 불필요한 `importmap` 완벽 제거.
 - [x] **빌드 시스템:** Vite + TypeScript + React 19 환경 구성
 - [x] **도서 데이터:** 챕터 요약, 인물 분석, 주제별 예시 데이터 포함
 - [x] **단어 학습:** 소설 속 핵심 단어장(Vocabulary Hall) 및 학습 체크 기능
 - [x] **퀴즈 시스템:** 4개 문항 및 결과 피드백 시스템 정상 동작
-- [x] **AI 튜터:** Gemini 3 Flash 모델 연동
+- [x] **AI 튜터:** Gemini 3 Flash 모델 연동 (Vercel 환경 변수 주입 확인)
 - [x] **배포 최적화:** `dist` 폴더 빌드 및 SPA 라우팅 지원
 
 ## Vercel 배포 가이드
@@ -24,4 +23,5 @@
 - `동작확인_20250124_v1.0`: 초기 기능 구현
 - `동작확인_20250124_v1.2`: 단어 학습 섹션 추가
 - `동작확인_20250124_v1.4`: Vite 빌드 시스템 도입
-- `동작확인_20250124_v1.5`: TypeScript 빌드 에러(process is not defined) 수정 (현재)
+- `동작확인_20250124_v1.5`: TypeScript 빌드 에러 수정 시도
+- `동작확인_20250124_v1.5.1`: `global.d.ts` 추가 및 `importmap` 제거 (현재)
