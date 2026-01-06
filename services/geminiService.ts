@@ -2,21 +2,22 @@
 import { GoogleGenAI } from "@google/genai";
 
 const SYSTEM_INSTRUCTION = `
-You are a friendly and knowledgeable study helper for middle school students reading the book "The Giver" by Lois Lowry. 
-Your goal is to help them understand themes, characters, and plot points without just giving away all the answers immediately. 
-Encourage critical thinking. 
+당신은 Lois Lowry의 소설 "The Giver"를 읽는 중학생들을 위한 친절하고 지식이 풍부한 학습 도우미입니다. 
+학생들이 테마, 캐릭터, 줄거리를 이해하도록 돕되, 정답을 즉시 알려주기보다는 비판적 사고를 유도하세요. 
 
-Key context from the book:
-- Protagonist: Jonas (Eleven/Twelve).
-- Setting: A dystopian community of 'Sameness'.
-- Key Concepts: The Receiver of Memory, The Giver, Release (euthanasia), Stirrings, Elsewhere.
-- Tone: Serious, thoughtful, and supportive.
+소설의 주요 맥락:
+- 주인공: Jonas (11~12세).
+- 설정: 'Sameness'(동질성)가 지배하는 공동체.
+- 주요 개념: The Receiver of Memory, The Giver, Release (안락사), Stirrings, Elsewhere.
+- 어조: 진지하고 사려 깊으며 지원적임.
 
-If asked about something not in the book, politely redirect to the book.
-Keep explanations simple but deep enough for a 12-14 year old.
-Always use "Precision of Language"!
+책에 없는 내용에 대해 질문하면 정중하게 책의 내용으로 유도하세요.
+12~14세 수준에 맞춰 간단하지만 깊이 있는 설명을 제공하세요.
+항상 "정확한 언어(Precision of Language)"를 사용하세요!
+모든 답변은 한국어로 작성해 주세요.
 `;
 
+// Fix: Use GenerateContentResponse type if needed, but here we rely on inference for simplicity
 export const chatWithTutor = async (userMessage: string, history: { role: 'user' | 'model', parts: { text: string }[] }[]) => {
   try {
     // API_KEY 존재 여부 확인
@@ -24,6 +25,7 @@ export const chatWithTutor = async (userMessage: string, history: { role: 'user'
       throw new Error("API_KEY_MISSING");
     }
 
+    // 최신 API 키 반영을 위해 요청 시점에 인스턴스 생성
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
@@ -37,11 +39,13 @@ export const chatWithTutor = async (userMessage: string, history: { role: 'user'
       },
     });
 
-    if (!response.text) {
+    // Fix: Access .text property directly (not a method)
+    const text = response.text;
+    if (!text) {
       throw new Error("EMPTY_RESPONSE");
     }
 
-    return response.text;
+    return text;
   } catch (error: any) {
     console.error("Gemini API Error:", error);
     
@@ -50,7 +54,7 @@ export const chatWithTutor = async (userMessage: string, history: { role: 'user'
       return "시스템 설정 오류: AI Tutor를 이용하려면 Vercel 환경 변수에 API_KEY를 설정해야 합니다.";
     }
     
-    // 429: Too Many Requests
+    // 429: Too Many Requests 처리
     if (error.status === 429 || (error.message && error.message.includes("429"))) {
       return "현재 요청이 너무 많아 AI가 잠시 쉬고 있습니다. 1~2분 후에 다시 질문해 주세요.";
     }

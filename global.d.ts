@@ -1,16 +1,18 @@
-
 /**
- * Explicitly define the 'process' object for the TypeScript compiler.
- * This satisfies tsc when it encounters process.env.API_KEY in both 
- * browser-side services and build-side config files.
+ * Global declaration for 'process' to satisfy TypeScript compiler (tsc).
+ * This allows the use of process.env.API_KEY in both browser and build scripts.
  */
+
 export {};
 
 declare global {
-  var process: {
+  interface Process {
     env: {
       API_KEY: string;
       [key: string]: string | undefined;
     };
-  };
+  }
+
+  // Use var here to allow augmentation of the global process object
+  var process: Process;
 }
