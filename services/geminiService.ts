@@ -76,11 +76,19 @@ export const generatePortrait = async (prompt: string): Promise<string | null> =
       },
     });
 
-    for (const part of response.candidates[0].content.parts) {
-      if (part.inlineData) {
-        return `data:image/png;base64,${part.inlineData.data}`;
+    // Candidates 존재 여부를 명시적으로 확인 (TS 빌드 에러 방지)
+    const candidates = response.candidates;
+    if (candidates && candidates.length > 0) {
+      const parts = candidates[0].content?.parts;
+      if (parts) {
+        for (const part of parts) {
+          if (part.inlineData) {
+            return `data:image/png;base64,${part.inlineData.data}`;
+          }
+        }
       }
     }
+    
     return null;
   } catch (error) {
     console.error("Image Generation Error:", error);

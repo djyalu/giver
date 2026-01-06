@@ -94,6 +94,21 @@ const App: React.FC = () => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chatMessages]);
 
+  // Dynamic Favicon Generation
+  useEffect(() => {
+    const createFavicon = async () => {
+      const faviconPrompt = "A minimalist, high-quality vector icon of a bright red apple on a clean white background, symbolic of memory and choice, flat design, professional style.";
+      const faviconUrl = await generatePortrait(faviconPrompt);
+      if (faviconUrl) {
+        const link = document.getElementById('dynamic-favicon') as HTMLLinkElement;
+        if (link) {
+          link.href = faviconUrl;
+        }
+      }
+    };
+    createFavicon();
+  }, []);
+
   const handleSendMessage = async () => {
     if (!chatInput.trim()) return;
     
