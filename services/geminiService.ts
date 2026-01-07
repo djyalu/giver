@@ -17,18 +17,9 @@ const SYSTEM_INSTRUCTION = `
 모든 답변은 한국어로 작성해 주세요.
 `;
 
-const getApiKey = () => {
-  return typeof process !== 'undefined' ? process.env.API_KEY : '';
-};
-
 export const chatWithTutor = async (userMessage: string, history: { role: 'user' | 'model', parts: { text: string }[] }[]) => {
   try {
-    const apiKey = getApiKey();
-    if (!apiKey) {
-      throw new Error("API_KEY_MISSING");
-    }
-
-    const ai = new GoogleGenAI({ apiKey });
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: [
@@ -49,9 +40,6 @@ export const chatWithTutor = async (userMessage: string, history: { role: 'user'
     return text;
   } catch (error: any) {
     console.error("Gemini API Error:", error);
-    if (error.message === "API_KEY_MISSING") {
-      return "시스템 설정 오류: AI Tutor를 이용하려면 API_KEY를 설정해야 합니다.";
-    }
     if (error.status === 429 || (error.message && error.message.includes("429"))) {
       return "현재 요청이 너무 많아 AI가 잠시 쉬고 있습니다. 1~2분 후에 다시 질문해 주세요.";
     }
@@ -64,10 +52,7 @@ export const chatWithTutor = async (userMessage: string, history: { role: 'user'
  */
 export const generatePortrait = async (prompt: string): Promise<string | null> => {
   try {
-    const apiKey = getApiKey();
-    if (!apiKey) return null;
-
-    const ai = new GoogleGenAI({ apiKey });
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash-image',
       contents: {
