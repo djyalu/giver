@@ -17,13 +17,18 @@ const SYSTEM_INSTRUCTION = `
 모든 답변은 한국어로 작성해 주세요.
 `;
 
+const getApiKey = () => {
+  return typeof process !== 'undefined' ? process.env.API_KEY : '';
+};
+
 export const chatWithTutor = async (userMessage: string, history: { role: 'user' | 'model', parts: { text: string }[] }[]) => {
   try {
-    if (!process.env.API_KEY) {
+    const apiKey = getApiKey();
+    if (!apiKey) {
       throw new Error("API_KEY_MISSING");
     }
 
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey });
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: [
@@ -59,9 +64,10 @@ export const chatWithTutor = async (userMessage: string, history: { role: 'user'
  */
 export const generatePortrait = async (prompt: string): Promise<string | null> => {
   try {
-    if (!process.env.API_KEY) return null;
+    const apiKey = getApiKey();
+    if (!apiKey) return null;
 
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey });
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash-image',
       contents: {
@@ -76,7 +82,6 @@ export const generatePortrait = async (prompt: string): Promise<string | null> =
       },
     });
 
-    // Candidates 존재 여부를 명시적으로 확인 (TS 빌드 에러 방지)
     const candidates = response.candidates;
     if (candidates && candidates.length > 0) {
       const parts = candidates[0].content?.parts;
